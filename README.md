@@ -47,5 +47,4 @@ Each microservices will have set of test cases writen to test the authnticity of
 1. Improve the frontend to include search functionality and filter functionality for users for better user experience
 1. Add more backend microservices as need arises
 ## Authors
-1. Akinola Samson Oluwasegun <akinolasamson1234@gmail.com>
-1. Fedrick Adedayo <alfredfredrick41@gmail.com>
+1. Seid Muhammed <abuhaithemalthry@gmail.com>
