@@ -1,0 +1,78 @@
+version: "3.8"
+services:
+  fog:
+    build:
+      context: ./fog
+      dockerfile: Dockerfile
+    container_name: fog
+    ports:
+      - "3000:80"
+    expose:
+      - "3000"
+    volumes:
+      - './fog:/usr/app'
+      - '/usr/app/node_module'
+    environment:
+      - CHORKIDAR_USEPOLLING=true
+    depends_on:
+      - user
+      - payment
+      - product
+      - notification
+  user:
+    build:
+      context: ./server/user
+      dockerfile: Dockerfile
+    container_name: user
+    volumes:
+      - './server/user:/usr/app'
+      - '/usr/app/node_module'
+    environment:
+      - CHORKIDAR_USEPOLLING=true
+    depends_on:
+      - payment
+  product:
+    build:
+      context: ./server/product
+      dockerfile: Dockerfile
+    container_name: product
+    env_file:
+      - ./server/product/.env
+    volumes:
+      - './server/product:/usr/app'
+      - '/usr/app/node_module'
+    environment:
+      - CHORKIDAR_USEPOLLING=true
+      - SECRET_KEY=$SECRET_KEY
+      - DEBUG=$DEBUG
+      - CLOUD_NAME=$CLOUD_NAME
+      - API_KEY=$API_KEY
+      - API_SECRET=$API_SECRET
+  notification:
+    build:
+      context: ./server/notification
+      dockerfile: Dockerfile
+    container_name: notification
+    volumes:
+      - './server/notification:/usr/app'
+      - '/usr/app/node_module'
+    env_file:
+      - ./server/notification/.env
+    environment:
+      - CHORKIDAR_USEPOLLING=true
+      - email=$email
+      - password=$password
+  payment:
+    build:
+      context: ./server/payment
+      dockerfile: Dockerfile
+    container_name: payment
+    volumes:
+      - './server/payment:/usr/app'
+      - '/usr/app/node_module'
+    env_file:
+      - ./server/payment/.env
+    environment:
+      - CHORKIDAR_USEPOLLING=true
+      - PAYSTACK_SECRET_KEY=$PAYSTACK_SECRET_KEY
+      - PAYSTACK_PUBLIC_KEY=$PAYSTACK_PUBLIC_KEY
